@@ -16,13 +16,13 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.io.FilenameUtils;
 
-import test.test.archivepart.ArchivePart;
 import test.test.archivepart.crypto.CipherUtils;
 import test.test.archivepart.crypto.XorOutputStream;
 import test.test.archivepart.factory.readers.APReaderV1;
 import test.test.archivepart.model.ArchiveEntry;
 import test.test.archivepart.model.ArchivePartFile;
 import test.test.archivepart.model.Triplet;
+import work.lclpnet.archivepart.ArchivePart;
 
 public class APBuilder {
 

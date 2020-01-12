@@ -5,11 +5,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import test.test.archivepart.ArchivePart;
 import test.test.archivepart.factory.readers.APReaderV1;
 import test.test.archivepart.factory.readers.APReaderV2;
 import test.test.archivepart.model.APParseException;
 import test.test.archivepart.model.ArchivePartFile;
+import work.lclpnet.archivepart.ArchivePart;
 
 public class APParser {
 

@@ -9,6 +9,8 @@ import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import org.apache.commons.io.IOUtils;
+
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Help.Visibility;
@@ -285,7 +287,7 @@ public class ArchivePart implements Callable<Integer>{
 		log("Extracting " + e.getFile() + "...");
 
 		try (InputStream in = apf.getInputStream(e); OutputStream out = new FileOutputStream(f)) {
-			in.transferTo(out);
+			IOUtils.copy(in, out);
 		} catch (IOException | GeneralSecurityException ex) {
 			ex.printStackTrace();
 		}

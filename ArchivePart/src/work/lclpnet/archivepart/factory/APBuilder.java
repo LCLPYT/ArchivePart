@@ -1,4 +1,4 @@
-package test.test.archivepart.factory;
+package work.lclpnet.archivepart.factory;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -16,12 +16,12 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.io.FilenameUtils;
 
-import test.test.archivepart.crypto.CipherUtils;
-import test.test.archivepart.crypto.XorOutputStream;
-import test.test.archivepart.factory.readers.APReaderV1;
-import test.test.archivepart.model.ArchiveEntry;
-import test.test.archivepart.model.ArchivePartFile;
-import test.test.archivepart.model.Triplet;
+import work.lclpnet.archivepart.crypto.CipherUtils;
+import work.lclpnet.archivepart.crypto.XorOutputStream;
+import work.lclpnet.archivepart.factory.readers.APReaderV1;
+import work.lclpnet.archivepart.model.ArchiveEntry;
+import work.lclpnet.archivepart.model.ArchivePartFile;
+import work.lclpnet.archivepart.model.Triplet;
 import work.lclpnet.archivepart.ArchivePart;
 
 public class APBuilder {

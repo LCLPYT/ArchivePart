@@ -1,4 +1,4 @@
-package test.test.archivepart.model;
+package work.lclpnet.archivepart.model;
 
 import java.io.File;
 import java.io.FileInputStream;

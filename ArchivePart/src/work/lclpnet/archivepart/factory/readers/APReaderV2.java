@@ -1,4 +1,4 @@
-package test.test.archivepart.factory.readers;
+package work.lclpnet.archivepart.factory.readers;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
@@ -7,21 +7,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import test.test.archivepart.crypto.CipherUtils;
-import test.test.archivepart.crypto.XorInputStream;
-import test.test.archivepart.factory.APParser;
-import test.test.archivepart.factory.APReader;
-import test.test.archivepart.model.APParseException;
-import test.test.archivepart.model.ArchiveEntry;
-import test.test.archivepart.model.ArchivePartFile;
+import work.lclpnet.archivepart.crypto.CipherUtils;
+import work.lclpnet.archivepart.crypto.XorInputStream;
+import work.lclpnet.archivepart.factory.APParser;
+import work.lclpnet.archivepart.factory.APReader;
+import work.lclpnet.archivepart.model.APParseException;
+import work.lclpnet.archivepart.model.ArchiveEntry;
+import work.lclpnet.archivepart.model.ArchivePartFile;
 
-public class APReaderV1 implements APReader{
+public class APReaderV2 implements APReader{
 
 	public static final byte[] CHECK_BYTES = "QVYZAulENKob2m7W".getBytes();
 
 	@Override
 	public ArchivePartFile read(DataInputStream in, APParser parser) throws Exception {
 		boolean encrypted = in.readBoolean();
+		long maxPartSize = in.readLong();
 
 		String password = parser.getPassword();
 		if(encrypted && password == null) throw new APParseException("This ArchivePart file is encrypted but no password was supplied.");
@@ -66,7 +67,7 @@ public class APReaderV1 implements APReader{
 			} else throw e;
 		}
 
-		return new ArchivePartFile(parser.getFile(), encrypted ? password : null, entries, 512 * (long) Math.pow(1024D, 2D));
+		return new ArchivePartFile(parser.getFile(), encrypted ? password : null, entries, maxPartSize);
 	}
 
 }

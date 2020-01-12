@@ -1,4 +1,4 @@
-package test.test.archivepart.crypto;
+package work.lclpnet.archivepart.crypto;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

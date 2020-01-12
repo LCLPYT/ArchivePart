@@ -14,11 +14,11 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Help.Visibility;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
-import test.test.archivepart.factory.APBuilder;
-import test.test.archivepart.factory.APParser;
-import test.test.archivepart.model.APParseException;
-import test.test.archivepart.model.ArchiveEntry;
-import test.test.archivepart.model.ArchivePartFile;
+import work.lclpnet.archivepart.factory.APBuilder;
+import work.lclpnet.archivepart.factory.APParser;
+import work.lclpnet.archivepart.model.APParseException;
+import work.lclpnet.archivepart.model.ArchiveEntry;
+import work.lclpnet.archivepart.model.ArchivePartFile;
 
 @Command(name = "java -jar ArchivePart.jar", mixinStandardHelpOptions = true, version = "ArchivePart 2.0", description = "Main command for archive part.")
 public class ArchivePart implements Callable<Integer>{

@@ -1,4 +1,4 @@
-package test.test.archivepart.factory;
+package work.lclpnet.archivepart.factory;
 
 import java.io.OutputStream;
 

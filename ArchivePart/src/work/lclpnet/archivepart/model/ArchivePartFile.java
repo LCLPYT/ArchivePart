@@ -1,4 +1,4 @@
-package test.test.archivepart.model;
+package work.lclpnet.archivepart.model;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -14,9 +14,9 @@ import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
 
-import test.test.archivepart.factory.APBuilder;
-import test.test.archivepart.factory.APParser;
-import test.test.archivepart.factory.BuilderState;
+import work.lclpnet.archivepart.factory.APBuilder;
+import work.lclpnet.archivepart.factory.APParser;
+import work.lclpnet.archivepart.factory.BuilderState;
 import work.lclpnet.archivepart.ArchivePart;
 
 public class ArchivePartFile {

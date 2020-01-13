@@ -296,7 +296,7 @@ public class ArchivePart implements Callable<Integer>{
 	private Integer build() {
 		if(maxPartSize == null || input == null) {
 			System.err.println("For the build action you need to specify:");
-			if(maxPartSize == null) System.err.println("maximumPartSize (-s, --max-part-size): The maximum file size of a part, in MB.");
+			if(maxPartSize == null) System.err.println("maximumPartSize (-mps, --max-part-size): The maximum file size of a part, in MB.");
 			if(input == null) System.err.println("rootFile (-i, --input): The file to invoke with the specified action.");
 			return 1;
 		}

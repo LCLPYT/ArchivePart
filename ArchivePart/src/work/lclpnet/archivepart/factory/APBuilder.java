@@ -90,10 +90,11 @@ public class APBuilder {
 
 	private boolean deleteOldVersion(String ext) {
 		oldVersionDeletedSuccessfully = output.exists() ? ArchivePart.delete(output) : true;
+
+		File parent = new File(output.getAbsolutePath().substring(0, output.getAbsolutePath().length() - output.getName().length()));
+		if(!parent.exists()) return oldVersionDeletedSuccessfully;
 		
-		if(output.getParentFile() == null) return oldVersionDeletedSuccessfully;
-		
-		File[] listFiles = output.getParentFile().listFiles();
+		File[] listFiles = parent.listFiles();
 		if(listFiles == null || listFiles.length <= 0) return oldVersionDeletedSuccessfully;
 
 		final Pattern p = Pattern.compile(FilenameUtils.getBaseName(output.getName()) + "\\.[0-9]+\\." + ext + "(\\.tmp)?");

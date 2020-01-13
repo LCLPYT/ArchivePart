@@ -28,7 +28,7 @@ allprojects {
 **Step 2.** Add the dependency
 ```gradle
 dependencies {
-	implementation 'work.lclpnet:archivepart:1.0.0'
+	implementation 'work.lclpnet:archivepart:1.1.0'
 }
 ```
 
@@ -49,6 +49,6 @@ Maven:
   <dependency>
     <groupId>work.lclpnet</groupId>
     <artifactId>archivepart</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
   </dependency>
 ```

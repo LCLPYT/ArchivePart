@@ -36,13 +36,13 @@ Maven:
 
 **Step 1.** Add a custom repository to your repositories
 ```xml
-	<repositories>
+<repositories>
     <repository>
       <id>nuc</id>
       <name>Custom Repository</name>
       <url>http://91.65.128.58:8080/repository/internal</url>
     </repository>
-	</repositories>
+</repositories>
 ```
 **Step 2.** Add the dependency
 ```xml

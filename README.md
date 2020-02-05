@@ -2,7 +2,7 @@
 A tool to manage archives that are split into multiple parts e.g. for use of big archives on FAT32.
 
 It does not support compression but a simple encryption method.
-Can be used to store archives bigger than 4GB on android.
+Can be used to store archives bigger than 4GB on **android**.
 
 ## Requirements
 - Java 8+
@@ -28,7 +28,7 @@ allprojects {
 **Step 2.** Add the dependency
 ```gradle
 dependencies {
-	implementation 'work.lclpnet:archivepart:1.0.0'
+	implementation 'work.lclpnet:archivepart:1.1.0'
 }
 ```
 
@@ -49,6 +49,6 @@ Maven:
   <dependency>
     <groupId>work.lclpnet</groupId>
     <artifactId>archivepart</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
   </dependency>
 ```

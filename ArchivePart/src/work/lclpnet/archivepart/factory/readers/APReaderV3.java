@@ -15,7 +15,7 @@ import work.lclpnet.archivepart.model.APParseException;
 import work.lclpnet.archivepart.model.ArchiveEntry;
 import work.lclpnet.archivepart.model.ArchivePartFile;
 
-public class APReaderV2 implements APReader{
+public class APReaderV3 implements APReader{
 
 	public static final byte[] CHECK_BYTES = "QVYZAulENKob2m7W".getBytes();
 
@@ -54,8 +54,9 @@ public class APReaderV2 implements APReader{
 				int part = input.readInt();
 				long offset = input.readLong();
 				long length = input.readLong();
+				long crc32 = input.readLong();
 
-				entries.add(new ArchiveEntry(file, part, offset, length, ArchiveEntry.CRC_UNDEFINED));
+				entries.add(new ArchiveEntry(file, part, offset, length, crc32));
 			}
 
 			input.close();

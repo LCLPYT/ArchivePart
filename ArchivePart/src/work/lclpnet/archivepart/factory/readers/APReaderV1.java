@@ -54,7 +54,7 @@ public class APReaderV1 implements APReader{
 				long offset = input.readLong();
 				long length = input.readLong();
 
-				entries.add(new ArchiveEntry(file, part, offset, length));
+				entries.add(new ArchiveEntry(file, part, offset, length, ArchiveEntry.CRC_UNDEFINED));
 			}
 
 			input.close();

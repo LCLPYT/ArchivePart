@@ -25,7 +25,7 @@ import work.lclpnet.archivepart.model.ArchivePartFile;
 @Command(name = "java -jar ArchivePart.jar", mixinStandardHelpOptions = true, version = "ArchivePart 2.1", description = "Main command for archive part.")
 public class ArchivePart implements Callable<Integer>{
 
-	public static final int VERSION = 2;
+	public static final int VERSION = 3;
 	private static ArchivePart instance = null;
 
 	public static void main(String[] args) {
@@ -304,7 +304,7 @@ public class ArchivePart implements Callable<Integer>{
 				.setPassword(password)
 				.setMaxPartSize(maxPartSize * (long) Math.pow(1024D, 2D))
 				.build();
-
+		
 		return apf != null ? 0 : 1;
 	}
 

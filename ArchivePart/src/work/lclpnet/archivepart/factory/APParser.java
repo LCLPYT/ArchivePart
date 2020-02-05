@@ -5,8 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import work.lclpnet.archivepart.factory.readers.APReaderV1;
-import work.lclpnet.archivepart.factory.readers.APReaderV2;
+import work.lclpnet.archivepart.factory.readers.*;
 import work.lclpnet.archivepart.model.APParseException;
 import work.lclpnet.archivepart.model.ArchivePartFile;
 import work.lclpnet.archivepart.ArchivePart;
@@ -50,6 +49,9 @@ public class APParser {
 				break;
 			case 2:
 				apFile = new APReaderV2().read(in, this);
+				break;
+			case 3:
+				apFile = new APReaderV3().read(in, this);
 				break;
 			default:
 				throw new APParseException("This ArchivePart can't parse AP files with version " + version + ". (max=" + ArchivePart.VERSION + ")");

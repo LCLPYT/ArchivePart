@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import work.lclpnet.archivepart.crypto.CipherUtils;
@@ -169,6 +170,7 @@ public class APBuilder {
 				dummyOut.writeInt(e.getPart());
 				dummyOut.writeLong(e.getOffset());
 				dummyOut.writeLong(e.getLength());
+				dummyOut.writeLong(e.getCrc32());
 			}
 
 			//writing to the temp stream is now finished
@@ -238,7 +240,9 @@ public class APBuilder {
 
 			in.close();
 
-			apFile.addEntry(new ArchiveEntry(path, state.currentPart, state.currentLength, length));
+			long crc32 = FileUtils.checksumCRC32(f);
+			
+			apFile.addEntry(new ArchiveEntry(path, state.currentPart, state.currentLength, length, crc32));
 			state.currentLength += length;
 
 			return true;

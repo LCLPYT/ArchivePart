@@ -6,9 +6,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.regex.Pattern;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 
 import picocli.CommandLine;
@@ -102,7 +106,10 @@ public class ArchivePart implements Callable<Integer>{
 
 	@Option(names = {"--prefix", "--prefix-mode"}, description = "If set, and the option --path is also set, the path will be interpreted as prefix.")
 	boolean prefixMode = false;
-	
+
+	@Option(names = {"--strict"}, description = "Enables strict mode. Used by the SYNC action to indicate that entries in the archive part which are not present in the specified directory should be removed.", showDefaultValue = Visibility.ALWAYS)
+	boolean strict = false;
+
 	@Override
 	public Integer call() throws Exception {
 		switch (action) {
@@ -112,9 +119,95 @@ public class ArchivePart implements Callable<Integer>{
 		case ADD: return add();
 		case REMOVE: return remove();
 		case ANALYSE: return analyse();
+		case SYNC: return sync();
 
 		default:
 			return -1;
+		}
+	}
+
+	private Integer sync() {
+		if(input == null || output == null) {
+			System.err.println("For the add action you need to specify:");
+			if(input == null) System.err.println("rootDirectory (-i, --input): The input root directory to be synced with the ArchivePart.");
+			if(output == null) System.err.println("outputApHeaderFile (-o, --output): The ArchivePart header file to sync the input directory with.");
+			return 1;
+		}
+
+		if(input.getName().equals(".")) input = input.getAbsoluteFile().getParentFile();
+
+		try {
+			ArchivePartFile apf = new APParser(output)
+					.setPassword(password)
+					.parse();
+
+			if(apf == null) return 1;
+
+			printInfo(apf);
+
+			log("Syncronizing the archive with \"" + input.getAbsolutePath() + "\"...");
+
+			recursiveSync(input, input.getAbsolutePath(), apf);
+			
+			if(strict) {
+				List<ArchiveEntry> remove = new ArrayList<>();
+				apf.getEntries().forEach(ae -> {
+					File rel = new File(input.getAbsoluteFile(), ae.getFile().substring(1));
+					if(rel.exists()) return;
+					
+					remove.add(ae);
+				});
+				remove.forEach(apf::removeEntry);
+				removed = remove.size();
+			}
+			
+			if(updated <= 0 && added <= 0 && removed <= 0) System.out.println("\nNo changes detected.");
+			else {
+				System.out.println("\nSummary:");
+				if(added > 0) System.out.println("Added " + added + " file" + (added != 1 ? "s" : "") + " to the archive.");
+				if(removed > 0) System.out.println("Removed " + removed + " file" + (removed != 1 ? "s" : "") + " from the archive.");
+				if(updated > 0) System.out.println("Updated " + updated + " " + (updated != 1 ? "entries" : "entry") + " in the archive.");
+			}
+
+			return 0;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return 1;
+		}
+	}
+
+	private void recursiveSync(File parent, String rootPath, ArchivePartFile apf) throws IOException {
+		File[] children = parent.listFiles();
+		if(children == null) return;
+
+		boolean insideMode = output.getAbsolutePath().startsWith(input.getAbsolutePath());
+		final Pattern p = Pattern.compile(FilenameUtils.getBaseName(apf.getBaseName()) + "(\\.[0-9]+)?\\." + apf.getExtension() + "(\\.tmp)?");
+
+		for(File f : children) {
+			if(f.isDirectory()) {
+				recursiveSync(f, rootPath, apf);
+				continue;
+			}
+
+			boolean sameFolder = output.getAbsoluteFile().getParentFile().getAbsolutePath().equals(f.getAbsoluteFile().getParentFile().getAbsolutePath());
+			boolean apFile = p.matcher(f.getName()).matches();
+			if(insideMode && sameFolder && apFile) continue;
+
+			String path = f.getAbsolutePath().substring(rootPath.length()).replace(File.separatorChar, '/');
+			ArchiveEntry entry = apf.getArchiveEntryByFile(path);
+			if(entry != null) {
+				long crc32 = FileUtils.checksumCRC32(f);
+				if(entry.getCrc32() == crc32) continue;
+				
+				System.out.println("Entry \"" + entry.getFile() + "\" has changes.");
+				apf.removeEntry(entry);
+				updated++;
+			} else {
+				System.out.println("File \"" + f.getAbsolutePath() + "\" was added.");
+				added++;
+			}
+			
+			apf.addToArchive(f, path);
 		}
 	}
 
@@ -176,7 +269,7 @@ public class ArchivePart implements Callable<Integer>{
 					System.err.println("This archive does not contain an entry with path \"" + path + "\"!");
 					return 1;
 				}
-				
+
 				boolean success = apf.removeEntry(e);
 				System.out.println((success ? "Successfully removed " : "Failed to remove ") + "'" + path + "' from the archive.");
 				return success ? 0 : 1;
@@ -304,7 +397,7 @@ public class ArchivePart implements Callable<Integer>{
 				.setPassword(password)
 				.setMaxPartSize(maxPartSize * (long) Math.pow(1024D, 2D))
 				.build();
-		
+
 		return apf != null ? 0 : 1;
 	}
 
@@ -317,7 +410,7 @@ public class ArchivePart implements Callable<Integer>{
 		if(action != APAction.ANALYSE || listMode) log("");
 	}
 
-	private int removed = 0;
+	private int removed = 0, added = 0, updated = 0;
 
 	enum ConflictStrategy {
 		OVERRIDE,
@@ -335,7 +428,8 @@ public class ArchivePart implements Callable<Integer>{
 		EXTRACT,
 		ADD,
 		REMOVE,
-		ANALYSE;
+		ANALYSE,
+		SYNC;
 
 		@Override
 		public String toString() {

@@ -2,7 +2,7 @@
 A tool to manage archives that are split into multiple parts e.g. for use of big archives on FAT32.
 
 It does not support compression but a simple encryption method.
-Can be used to store archives bigger than 4GB on android.
+Can be used to store archives bigger than 4GB on **android**.
 
 ## Requirements
 - Java 8+

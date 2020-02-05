@@ -37,8 +37,15 @@ public class APBuilder {
 
 	public APBuilder(File root, File output) {
 		if(root == null || !root.exists() || !root.isDirectory()) throw new IllegalArgumentException("The file \"" + root.getAbsolutePath() + "\" is not a valid root directory.");
-		if(output == null) output = new File(root.getParentFile(), root.getName() + ".ap");
-
+		if(root.getName().equals(".")) {
+			root = root.getAbsoluteFile().getParentFile();
+			output = new File(root, root.getName() + ".ap");
+		} else {
+			if(output == null) output = new File(root.getParentFile(), root.getName() + ".ap");
+		}
+		
+		System.out.println(output);
+		
 		this.root = root;
 		this.output = output;
 	}

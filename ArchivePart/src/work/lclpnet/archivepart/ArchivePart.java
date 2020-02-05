@@ -22,7 +22,7 @@ import work.lclpnet.archivepart.model.APParseException;
 import work.lclpnet.archivepart.model.ArchiveEntry;
 import work.lclpnet.archivepart.model.ArchivePartFile;
 
-@Command(name = "java -jar ArchivePart.jar", mixinStandardHelpOptions = true, version = "ArchivePart 2.0", description = "Main command for archive part.")
+@Command(name = "java -jar ArchivePart.jar", mixinStandardHelpOptions = true, version = "ArchivePart 2.1", description = "Main command for archive part.")
 public class ArchivePart implements Callable<Integer>{
 
 	public static final int VERSION = 2;
@@ -79,8 +79,8 @@ public class ArchivePart implements Callable<Integer>{
 	@Option(names = {"-o", "--output"}, description = "The output file to invoke with the specified action.")
 	File output = null;
 
-	@Option(names = {"-mps", "--max-part-size"}, description = "The maximum file size of a part, in MB.")
-	Integer maxPartSize = null;
+	@Option(names = {"-mps", "--max-part-size"}, description = "The maximum file size of a part, in MB.", showDefaultValue = Visibility.ALWAYS)
+	Integer maxPartSize = 500;
 
 	@Option(names = {"-p", "--password"}, description = "Optional password to encrypt the file.")
 	String password = null;
@@ -102,7 +102,7 @@ public class ArchivePart implements Callable<Integer>{
 
 	@Option(names = {"--prefix", "--prefix-mode"}, description = "If set, and the option --path is also set, the path will be interpreted as prefix.")
 	boolean prefixMode = false;
-
+	
 	@Override
 	public Integer call() throws Exception {
 		switch (action) {
@@ -294,9 +294,8 @@ public class ArchivePart implements Callable<Integer>{
 	}
 
 	private Integer build() {
-		if(maxPartSize == null || input == null) {
+		if(input == null) {
 			System.err.println("For the build action you need to specify:");
-			if(maxPartSize == null) System.err.println("maximumPartSize (-mps, --max-part-size): The maximum file size of a part, in MB.");
 			if(input == null) System.err.println("rootFile (-i, --input): The file to invoke with the specified action.");
 			return 1;
 		}
@@ -315,7 +314,7 @@ public class ArchivePart implements Callable<Integer>{
 		log("Max Part Size: " + (apf.getMaxPartSize() / (long) Math.pow(1024D, 2D)) + " MB");
 		log("Part files: " + apf.getHighestPartFileNumber());
 		log("Files included: " + apf.getEntries().size());
-		log("");
+		if(action != APAction.ANALYSE || listMode) log("");
 	}
 
 	private int removed = 0;

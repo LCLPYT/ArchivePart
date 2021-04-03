@@ -16,19 +16,15 @@ Then execute the file via command line:
 Gradle:
 
 **Step 1.** Add a custom repository to your repositories
-Add it in your root build.gradle at the end of repositories:
 ```gradle
-allprojects {
-	repositories {
-		...
-		maven { url 'http://91.65.128.58:8080/repository/internal' }
-	}
+repositories {
+    maven { url 'https://repo.lclpnet.work/repository/internal' }
 }
 ```
 **Step 2.** Add the dependency
 ```gradle
 dependencies {
-	implementation 'work.lclpnet:archivepart:1.1.0'
+    implementation 'work.lclpnet:archivepart:2.1.0'
 }
 ```
 
@@ -38,9 +34,9 @@ Maven:
 ```xml
 <repositories>
     <repository>
-      <id>nuc</id>
-      <name>Custom Repository</name>
-      <url>http://91.65.128.58:8080/repository/internal</url>
+      <id>lclpnetwork</id>
+      <name>LCLPNetwork Repository</name>
+      <url>https://repo.lclpnet.work/repository/internal</url>
     </repository>
 </repositories>
 ```
@@ -49,6 +45,6 @@ Maven:
   <dependency>
     <groupId>work.lclpnet</groupId>
     <artifactId>archivepart</artifactId>
-    <version>1.1.0</version>
+    <version>2.1.0</version>
   </dependency>
 ```

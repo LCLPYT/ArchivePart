@@ -20,9 +20,9 @@
   </build>
   <distributionManagement>
     <repository>
-      <id>nuc</id>
-      <name>Custom Repository</name>
-      <url>http://91.66.0.249:8080/repository/internal</url>
+      <id>lclpnetwork</id>
+      <name>LCLPNetwork Repository</name>
+      <url>https://repo.lclpnet.work/repository/internal</url>
     </repository>
   </distributionManagement>
   <dependencies>
